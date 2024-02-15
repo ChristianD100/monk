@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Binomial Expansion Calculator</title>
+    <script>
+        function binomial_coefficient(n, k) {
+            if (k > n) {
+                return 0;
+            }
+            if (k === 0 || k === n) {
+                return 1;
+            }
+            return factorial(n) / (factorial(k) * factorial(n - k));
+        }
+
+        function factorial(n) {
+            if (n === 0 || n === 1) {
+                return 1;
+            }
+            return n * factorial(n - 1);
+        }
+
+        function binomial_expansion(p, n) {
+            var probabilities = [];
+            for (var k = 0; k <= n; k++) {
+                var probability = binomial_coefficient(n, k) * Math.pow(p, k) * Math.pow((1 - p), (n - k));
+                probabilities.push(probability);
+            }
+            return probabilities;
+        }
+
+        function calculate() {
+            var p = parseFloat(document.getElementById("probability").value);
+            var n = parseInt(document.getElementById("trials").value);
+            var output = document.getElementById("output");
+
+            output.innerHTML = ""; // Clear previous output
+
+            if (isNaN(p) || isNaN(n) || p < 0 || p > 1 || n < 0) {
+                output.innerHTML = "Please enter valid values for probability and number of trials.";
+                return;
+            }
+
+            var probabilities = binomial_expansion(p, n);
+            for (var k = 0; k <= n; k++) {
+                output.innerHTML += "P(" + k + " successes) = " + probabilities[k].toFixed(4) + "<br>";
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Binomial Expansion Calculator</h1>
+    <label for="probability">Enter the probability of success (0 ≤ p ≤ 1):</label>
+    <input type="number" id="probability" step="0.01" min="0" max="1">
+    <br>
+    <label for="trials">Enter the number of trials (n ≥ 0):</label>
+    <input type="number" id="trials" step="1" min="0">
+    <br>
+    <button onclick="calculate()">Calculate</button>
+    <br>
+    <div id="output"></div>
+</body>
+</html>
